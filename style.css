@@ -1,0 +1,36 @@
+html,body{
+    font-size: 16px;
+    font-family:'Times New Roman', Times, serif;
+}
+
+.container{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.title__h2{
+    text-align: center;
+    background-color: grey;
+    padding: 1rem;
+    margin: 2rem 0;
+}
+
+.red{
+    color: red;
+}
+
+.yellow{
+    color: yellow;
+}
+
+.green{
+    color: green;
+}
+
+td  {
+    border: 2px solid black;
+    border-collapse: collapse;
+    padding: 1rem;
+
+}
+
