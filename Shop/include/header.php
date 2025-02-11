@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+
+    <!-- header section strats -->
+    <!DOCTYPE html>
 <html>
 
 <head>
@@ -28,9 +30,7 @@
   <link href="assets/css-famma/responsive.css" rel="stylesheet" />
 </head>
 
-<body class="sub_page">
-  <div class="hero_area">
-    <!-- header section strats -->
+
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container">
@@ -143,124 +143,3 @@
         </nav>
       </div>
     </header>
-    <!-- end header section -->
-  </div>
-  <!-- inner page section -->
-  <section class="inner_page_head">
-    <div class="container_fuild">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="full">
-            <h3>Identifiez-vous</h3>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- end inner page section -->
-  <!-- why section -->
-  <section class="why_section layout_padding">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-          <div class="full">
-            <form action="index.php">
-              <fieldset>
-                <input
-                  type="text"
-                  placeholder="Entrez votre adresse e-mail"
-                  name="email"
-                  required />
-                <input
-                  type="password"
-                  placeholder="Enter votre mot de passe"
-                  name="subject"
-                  required />
-                <input type="submit" value="Continuer" />
-              </fieldset>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- end why section -->
-  <!-- arrival section -->
-  <!-- end arrival section -->
-  <!-- footer section -->
- <footer class="footer_section">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 footer-col">
-          <div class="footer_contact">
-            <h4>Nous trouver..</h4>
-            <div class="contact_link_box">
-              <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span> Coordonnées </span>
-              </a>
-              <a href="">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span> 02 23 45 78 89 </span>
-              </a>
-              <a href="">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <span> demo@gmail.com </span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 footer-col">
-          <div class="footer_detail">
-            <a href="index.php" class="footer-logo"> Famms </a>
-            <p>
-              Nécessaire, ce qui en fait le premier véritable générateur sur Internet.
-              Il utilise un dictionnaire de plus de 200 mots latins, combiné avec
-            </p>
-            <div class="footer_social">
-              <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-linkedin" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-pinterest" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 footer-col">
-          <div class="map_container">
-            <div class="map">
-              <div id="googleMap"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-  <!-- footer end -->
-  <div class="cpy_">
-    <p>
-      © 2025 Tous droits réservés par Grégory LACROIX
-    </p>
-  </div>
-  <!-- footer section -->
-  <!-- jQery -->
-  <script src="assets/js-famma/jquery-3.4.1.min.js"></script>
-  <!-- popper js -->
-  <script src="assets/js-famma/popper.min.js"></script>
-  <!-- bootstrap js -->
-  <script src="assets/js-famma/bootstrap.js"></script>
-  <!-- custom js -->
-  <!-- <script src="assets/js-famma/custom.js"></script> -->
-</body>
-
-</html>
