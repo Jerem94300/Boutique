@@ -1,4 +1,56 @@
 <?php
+require_once('include/init.php');
+
+//si l'indice action a pour valeur logout cela veut dire que l'internaute a cliqué sur deconnexion, on supprime le tableau Array de données user dans la session
+
+if(isset($_GET['action']) && $_GET['action'] == 'logout'){
+  //unset ne supprime pas le fichier de session mais seulement l'indice 'user'
+  unset($_SESSION['user']);
+}
+
+//si l'utilisateur est conneté, il n'a rien a faire sur la page identifiez vous on le redirige sur index.php
+if (userConnected()) {
+  header('Location: index.php');
+}
+// echo  '<pre>'; print_r($_POST); echo'</pre>';
+
+
+if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD']=== 'POST') {
+  $data = $connect_db->prepare("SELECT * FROM user WHERE email = :email");
+  $data->bindValue(':email', $_POST['email'],PDO::PARAM_STR);
+  $data->execute();
+
+  if ($data->rowCount()) {
+    // echo "email existant";
+
+    $user = $data->fetch(PDO::FETCH_ASSOC);
+    // echo '<pre>';print_r($user); echo'</pre>';
+
+    if (password_verify($_POST['password'],$user['password'])) {
+
+      foreach ($user as $key => $value) {
+        $_SESSION['user'][$key] = $value;
+      }
+      // echo '<pre>';print_r($_SESSION); echo'</pre>';
+
+      header("Location: index.php");
+
+
+    }else {
+      $error = '<div class="background-danger p-3 mb-3 text-white text-center">Email ou mot de passe invalide</div>';
+    }
+
+
+
+
+  }else{
+    // echo "email inexistant";
+    $error = '<div class="background-danger p-3 mb-3 text-white text-center">Email ou mot de passe invalide</div>';
+  }
+
+
+
+}
 require_once('include/header.php');
 
 ?>
@@ -21,20 +73,25 @@ require_once('include/header.php');
     <div class="container">
       <div class="row">
         <div class="col-lg-8 offset-lg-2">
+
+          <?php if (isset($_SESSION['msgRegisterValidate'])) echo $_SESSION['msgRegisterValidate'];?>
+          <?php if (isset($error)) echo $error;?>
+
           <div class="full">
-            <form action="index.php">
+            <form method="post" action="">
               <fieldset>
                 <input
                   type="text"
                   placeholder="Entrez votre adresse e-mail"
-                  name="email"
-                  required />
+                  name="email" class="<?php if (isset($error)) echo 'border-danger';?>"
+                  value="<?php if (isset($_POST['email'])) echo $_POST['email'];?>"
+                   />
                 <input
                   type="password"
                   placeholder="Enter votre mot de passe"
-                  name="subject"
-                  required />
-                <input type="submit" value="Continuer" />
+                  name="password" class="<?php if (isset($error)) echo 'border-danger';?>"
+                   />
+                <input type="submit"  name="submit" value="Continuer" />
               </fieldset>
             </form>
           </div>
@@ -49,6 +106,10 @@ require_once('include/header.php');
 
   <?php
 require_once('include/footer.php');
+
+// on supprime le message de validation d'inscription dans la session, afin qu'il ne sopit plus affiché
+
+unset($_SESSION['msgRegisterValidate']);
 
 ?>
   <!-- footer end -->

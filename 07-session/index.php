@@ -5,7 +5,7 @@ session_start();
 if ($_POST) {
 
 
-//on crée un indice 'email' dans le fichier de session auquel on so-tock l'email saisi dans le formulaire
+//on crée un indice 'email' dans le fichier de session auquel on stock l'email saisi dans le formulaire
 $_SESSION['email'] = $_POST['email'];
 $_SESSION['nom'] = 'Abelard';
 $_SESSION['prenom'] = 'Jérémy';

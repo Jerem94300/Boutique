@@ -1,12 +1,10 @@
 <?php
   require_once('include/init.php');
 
+  if (userConnected()) {
+    header('Location: index.php');
+  }
 
-
-
-echo '<prev>';
-print_r($_POST);
-echo '</prev>';
 
 
 if (isset($_POST['submit'])&& $_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,49 +16,54 @@ if (isset($_POST['submit'])&& $_SERVER['REQUEST_METHOD'] === 'POST') {
  
   if ($data->rowCount()) {
     $errorVerifEmail = '<small class="text-danger">Email déjà utilisé</small><br>';
+    $error = true;
   } elseif (empty($_POST['email'])) {
     $errorVerifEmail ='<small class="text-danger">Merci de saisir une adresse email</small><br>';
+    $error = true;
   } elseif (!filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)) {
-  $errorVerifEmail='<small class="text-danger">Erreur Email ! Ex: exemple@gmail.com</small><br>';
+    $errorVerifEmail='<small class="text-danger">Erreur Email ! Ex: exemple@gmail.com</small><br>';
+    $error = true;
   }
 
   $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/"; 
 
   if (empty($_POST['password'])) {
-  $errorPassWords= '<small class="text-danger">Merci de saisir un mot de passe</small><br>';
+    $errorPassWords= '<small class="text-danger">Merci de saisir un mot de passe</small><br>';
+    $error = true;
   }elseif (!preg_match($password_regex, $_POST['password'])) {
     $errorSubject= '<small class="text-danger">Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial</small><br>';
+    $error = true;
   }elseif (($_POST['password']) !== ($_POST['repeat_password'])) {
     $errorRepeatPassWords= '<small class="text-danger">Les mots de passe ne correspondent pas</small><br>';
-  }else {
-    $validatePassWords= '<small class="text-success">Mot de passe valide</small><br>';
+    $error = true;
   }
 
+  //exo si l'utilisateur a rempli le formulaire correctement, executez la requete d'insertion en base de données et redirigez l'utilisateur vers la page de connexion.php
 
- 
+  if (!isset($error)){
+
+    //le mot de passe n'est jamais conservé en clair dans la base de données
+    //passxord_hash permet de créer une clé de hachage du mot de passe dans la bdd
+    $result = $connect_db->prepare("INSERT INTO user (password, firstName, lastName, email, city, zipcode, address) VALUES (:password, :firstName, :lastName, :email, :city, :zipcode, :address)");
+
+    $result->bindValue(':password', password_hash($_POST['password'],PASSWORD_DEFAULT),PDO::PARAM_STR);
+    $result->bindValue(':firstName', $_POST['firstName'],PDO::PARAM_STR);
+    $result->bindValue(':lastName', $_POST['lastName'],PDO::PARAM_STR);
+    $result->bindValue(':email', $_POST['email'],PDO::PARAM_STR);
+    $result->bindValue(':city', $_POST['city'],PDO::PARAM_STR);
+    $result->bindValue(':zipcode', $_POST['zipcode'],PDO::PARAM_STR);
+    $result->bindValue(':address', $_POST['address'],PDO::PARAM_STR);
+    $result->execute();
+
+    //on stock dans le fichier de session de l'utilisateur, le fichier de session est stocké coté serveur et est accessible via $_SESSION, et est accessible sur n'importe quelle page du site. On stock le message flash dans le fichier de session
+    $_SESSION['msgRegisterValidate'] = '<div class="bg-success p-3 text-white text-center my-3">Formulaire conforme, vous pouvez dès à présent vous connecter.</div><br>';
+
+    // $validateForm = '<div class="alert alert-success text-center my-3">Formulaire conforme</div><br>';
+
+    header('Location: connexion.php');
 }
-// if (!isset($error)) {
-//   $result = $connect_db->prepare("INSERT INTO user (firstName, lastName, email, address, city, zipcode, password) VALUES (:firstName, :lastName, :email, :address, :city, :zipcode, :password)");
-//   $result->execute(array(
-//     ':firstName' => $_POST['firstName'],
-//     ':lastName' => $_POST['lastName'],
-//     ':email' => $_POST['email'],
-//     ':address' => $_POST['address'],
-//     ':city' => $_POST['city'],
-//     ':zipcode' => $_POST['zipcode'],
-//     ':password' => $password
-//   ));
-//   echo '<div class="alert alert-success">Votre compte a bien été créé</div>';
 
-// }
-
-//exo : Controler que l'on receptionne bien les données saisies dans le formulaire
-//: Controler la disponibilité de l'email (SELECT + rowCount())
-/// Afficher un message d'erreur si le champs email est vide
-//controler la validite de l'email(filter_var())
-//Afficher un message si le champs mot de passe est vide
-//Controler que les mots de passes correspondent
-
+}
 
 
 require_once('include/header.php');
@@ -82,6 +85,8 @@ require_once('include/header.php');
   <!-- why section -->
   <section class="why_section layout_padding">
     <div class="container">
+
+
       <div class="row">
         <div class="col-lg-8 offset-lg-2">
           <div class="full">
