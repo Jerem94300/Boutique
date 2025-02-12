@@ -56,16 +56,31 @@
               <li class="nav-item">
                 <a class="nav-link" href="contact.php">Contact</a>
               </li>
+              <!-- condition lorsque user n'est pas connecté : !userConnected() -->
+              <?php if(!userConnected()):?>
               <li class="nav-item">
                 <a class="nav-link" href="connexion.php">Identifiez-vous</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="inscription.php">Inscription</a>
               </li>
+
+              <?php endif; ?>
+              <!-- condition lorsque user est connecté : userConnected() -->
+              <?php if(userConnected()):?>
+
               <li class="nav-item">
                 <a class="nav-link" href="profil.php">Mon compte</a>
               </li>
-              <li class="nav-item dropdown">
+
+              <li class="nav-item">
+                <a class="nav-link" href="connexion.php?action=logout">Déconnexion</a>
+              </li>
+
+              <?php endif; ?>
+              
+              <?php if(adminConnected()):?>
+                <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   href="#"
@@ -80,6 +95,8 @@
                   <li><a href="admin/gestion_user.php">Utilisateurs</a></li>
                 </ul>
               </li>
+              <?php endif; ?>
+
               <li class="nav-item">
                 <a class="nav-link" href="#">
                   <svg

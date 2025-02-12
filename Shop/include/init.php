@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //--Connexion BDD
 
 $connect_db = new PDO('mysql:host=localhost;dbname=shop', 'root', '', [
@@ -8,8 +10,6 @@ $connect_db = new PDO('mysql:host=localhost;dbname=shop', 'root', '', [
 
 
 //Session
-
-session_start();
 
 //chemin
 
@@ -28,8 +28,6 @@ define("URL", "http://localhost/PHP/Shop/");
 
 
 // Variables
-
-$content = '';
 
 
 //----Failles XSS
