@@ -13,7 +13,7 @@ $connect_db = new PDO('mysql:host=localhost;dbname=shop', 'root', '', [
 
 //chemin
 
-define('RACINE_SITE', $_SERVER['DOCUMENT_ROOT'].'/');
+define('RACINE_SITE', $_SERVER['DOCUMENT_ROOT'].'/PHP/Shop/');
 // echo '<pre>';print_r(RACINE_SITE); echo'</pre>';
 
 //Cette constante retourne le chemin physique du dossier htdocs sur le serveur, de notre dossier 'shop' sur le serveur
