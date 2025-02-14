@@ -1,5 +1,21 @@
 <?php
+require_once('include/init.php');
+
+
+
+$currentProduct = $connect_db->query("SELECT * FROM product WHERE id_product == $_GET['id']");
+
+echo '<pre>'; print_r($currentProduct); echo'</pre>';
+
+
+
+
+
+//afficher le produit selectionné dans gestion_boutique selon l'id
+
+
 require_once('include/header.php');
+
 
 ?>
   <!-- inner page section -->
@@ -31,10 +47,41 @@ require_once('include/header.php');
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6">
           <div class="detail-box">
-            <h5>Men's Shirt</h5>
+          <?php foreach ($products as $arrayProduct):  ?>
+          <?php foreach ($arrayProduct as $key => $value): ;?>
+        
+        
+           
+            <h5>
+              <?php if(isset($_GET['id']) && $_GET['id'] == isset($key['id_product'])): ?>
+              <?= $key['title'];?>
+            </h5>
+
             <h6>$75</h6>
+            <?php endif; ?>
           </div>
+          <?php endforeach; ?>
+          <?php endforeach; ?>
+
+          
+           <!-- Inserer un formulaire avec un bouton select pour selectionner la quantite -->
+          <form method="post" action="">
+          <div class="form-group">
+              <label for="quantity">Quantité</label>
+              <select class="form-control" id="quantity" name="quantity">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+        </form>
+        
         </div>
+
+      
+
       </div>
       <div class="btn-box">
         <a href=""> View All products </a>
