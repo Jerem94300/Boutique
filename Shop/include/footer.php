@@ -59,7 +59,7 @@
   <!-- footer end -->
   <div class="cpy_">
     <p>
-      © 2025 Tous droits réservés par Grégory LACROIX
+      © 2025 Tous droits réservés par Jérémy ABELARD
     </p>
   </div>
   <!-- jQery -->

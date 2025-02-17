@@ -22,3 +22,68 @@ function adminConnected(){
 
 
 }
+
+
+//Fonction création panier session
+
+function createCart(){
+    //si l'indice cart n'est pas defini dans la session utilisateur cela veut dire que l'utilisateur n'a ajouté aucuns produits dans le panier alors on crée les differents tableaux dans la session
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+        $_SESSION['cart']['id_product'] = [];
+        $_SESSION['cart']['title'] = [];
+        $_SESSION['cart']['picture'] = [];
+        $_SESSION['cart']['reference'] = [];
+        $_SESSION['cart']['quantity'] = [];
+        $_SESSION['cart']['price'] = [];
+
+    }
+}
+
+//Fonction ajouter produit dans panier session
+
+function addProductToCart($id_product, $title, $picture, $reference, $quantity, $price){
+
+    createCart(); // on controle que le panier existe dans la session
+
+    // on controle si l'id du produit qu'on essai d'ajouter existe deja 
+    $positionProduct = array_search($id_product, $_SESSION['cart']['id_product']);
+    var_dump($positionProduct);
+    //si la valeur de $positionProduct est differente de false cela veut dire que l'id_product existe dans le panier , on modifie seulement la quantite du produit
+    if($positionProduct !== false){
+
+        $_SESSION['cart']['quantity'][$positionProduct]  += $quantity;
+
+    }else
+    //sinon l'id n'est pas dans la session, on créer une nouvelle ligne dans le panier
+    //les tableaux vides [] permettent de creer des indices numerique dans les tableaux
+
+    $_SESSION['cart']['id_product'][] = $id_product;
+    $_SESSION['cart']['title'][]  = $title;
+    $_SESSION['cart']['picture'][] = $picture;
+    $_SESSION['cart']['reference'][]  = $reference;
+    $_SESSION['cart']['quantity'][]  = $quantity;
+    $_SESSION['cart']['price'][] = $price;
+}
+
+//Fonction montant total du panier
+
+function totalAmount(){
+
+    $total = 0;
+    for($i = 0; $i < count($_SESSION['cart']['id_product']); $i++){
+        $total += $_SESSION['cart']['price'][$i] * $_SESSION['cart']['quantity'][$i];
+    }
+    return round($total, 2);
+}
+
+
+//Fonction liens actifs navbar
+
+function activeLink($url){
+
+    //on verifie si l'url en cours correspond au lien de la navbar
+    if($_SERVER['PHP_SELF'] == $url)
+        echo 'active';
+   
+    }

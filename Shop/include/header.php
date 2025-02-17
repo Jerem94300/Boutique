@@ -3,6 +3,8 @@
     <!DOCTYPE html>
 <html>
 
+
+
 <head>
   <!-- Basic -->
   <meta charset="utf-8" />
@@ -28,7 +30,11 @@
   <link href="assets/css-famma/style.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="assets/css-famma/responsive.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
+
 
 
     <header class="header_section">
@@ -47,21 +53,21 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
-              <li class="nav-item active">
+              <li class="nav-item  <?php activeLink('/PHP/Shop/index.php') ?>">
                 <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php activeLink('/PHP/Shop/product.php') ?>" > 
                 <a class="nav-link" href="product.php">Boutique</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php activeLink('/PHP/Shop/contact.php') ?>">
                 <a class="nav-link" href="contact.php">Contact</a>
               </li>
               <!-- condition lorsque user n'est pas connecté : !userConnected() -->
               <?php if(!userConnected()):?>
-              <li class="nav-item">
+              <li class="nav-item <?php activeLink('/PHP/Shop/connexion.php') ?>">
                 <a class="nav-link" href="connexion.php">Identifiez-vous</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item <?php activeLink('/PHP/Shop/inscription.php') ?>">
                 <a class="nav-link" href="inscription.php">Inscription</a>
               </li>
 
@@ -97,8 +103,8 @@
               </li>
               <?php endif; ?>
 
-              <li class="nav-item">
-                <a class="nav-link" href="#">
+              <li class="nav-item d-flex justifi-content-center align-items-start <?php activeLink('/PHP/Shop/panier.php') ?>">
+                <a class="nav-link" href="panier.php">
                   <svg
                     version="1.1"
                     id="Capa_1"
@@ -149,12 +155,24 @@
                     <g></g>
                   </svg>
                 </a>
-              </li>
-              <form class="form-inline">
+                <!-- exo afficher le nombre de produit total dans le panier  -->
+
+                <?php
+                $nbProducts = 0;
+                if(isset($_SESSION['cart'])){
+                  $nbProducts = array_sum($_SESSION['cart']['quantity']);
+                }
+                ?>
+
+                <span class=" d-flex bg-success text-white text-center mt-1"><?= $nbProducts; ?> Articles</span>
+
+
+                </li>
+              <!-- <form class="form-inline">
                 <button class="btn my-2 my-sm-0 nav_search-btn" type="submit">
                   <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
-              </form>
+              </form> -->
             </ul>
           </div>
         </nav>

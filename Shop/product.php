@@ -16,15 +16,6 @@ $products = $data->fetchAll(PDO::FETCH_ASSOC);
 // 3 Traitement pour l'affichage (boucle)
 
 
-
-
-
-
-
-
-
-
-
 //exo: Afficher les produits stockés en BDD
 // 1 selectionner l'ensemble des produit de la table product
 // 2 executer une methode (fetch/fetchAll) pour rendre le resultat exploitable sous forme d'array
@@ -60,7 +51,7 @@ require_once('include/header.php');
             <div class="box">
               <div class="option_container">
                 <div class="options">
-                  <a href="fiche_produit.php?action=id=<?= $arrayProduct['id_product'] ?>" class="option1">Voir le produit</a>
+                  <a href="fiche_produit.php?id=<?= $arrayProduct['id_product'] ?>" class="option1">Voir le produit</a>
                   <a href="" class="option2">Acheter maintenant</a>
                 </div>
               </div>

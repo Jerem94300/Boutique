@@ -1129,8 +1129,18 @@ form input[type="submit"]:focus {
   font-size: 0.7rem;
 }
 
+.error-color-danger {
+  color: #f7444e;
+
+}
+
+
 .background-danger {
   background: #f7444e;
+}
+
+.picture_product{
+  width: 75px;
 }
 
 http://kute-themes.com/html/boutique/html/index.html
