@@ -159,9 +159,9 @@
 
                 <?php
                 $nbProducts = 0;
-                if(isset($_SESSION['cart'])){
+                if(isset($_SESSION['cart']))
                   $nbProducts = array_sum($_SESSION['cart']['quantity']);
-                }
+                
                 ?>
 
                 <span class=" d-flex bg-success text-white text-center mt-1"><?= $nbProducts; ?> Articles</span>

@@ -14,20 +14,82 @@ if (isset($_POST['add_cart'])) {
  addProductToCart($product['id_product'],$product['title'],$product['picture'],$product['reference'],$_POST['quantity'],$product['price']);
 //  echo '<pre>'; print_r($_SESSION); echo'</pre>';
 
-header('location:panier.php');
+header('location: panier.php');
 }
 
+// // supprimer un produit du panier
+
+// if (isset($_GET['action']) && $_GET['action'] == 'delete') {
+//   removeProductFromCart($_GET['id']);
+//   header('location: panier.php');
+// }
+
+// //vider le panier
+
+// if (isset($_GET['action']) && $_GET['action'] == 'empty') {
+//   unset($_SESSION['cart']);
+// }
+
+
+
 if(isset($_POST['payForCart'])){
-  echo 'Paiement effectué';
 
   for ($i=0; $i < count($_SESSION['cart']['id_product']); $i++) { 
     $data = $connect_db->query("SELECT* FROM product WHERE id_product = ".$_SESSION['cart']['id_product'][$i]);
     $product = $data->fetch(PDO::FETCH_ASSOC);
 
-    echo '<pre>'; print_r($product); echo'</pre>';
+    // echo '<pre>'; print_r($product); echo'</pre>';
+
    
+      //si la quantité en stock en BDD est inférieure
+    if($product['stock'] < $_SESSION['cart']['quantity'][$i] ){
+
+      $error = '';
+      $error .= '<div class="alert alert-danger text-center">Stock restant du produit : ' .$_SESSION['cart']['title'][$i]. ': <strong>' .$product['stock']. '</strong></div>';
+
+      $error .= '<div class="alert alert-warning text-center mt-2">Quantité commandée : <strong>' .$_SESSION['cart']['quantity'][$i].'</strong></div>';
+
+      if ($product['stock'] > 0) {
+        //le stock est inferieur à la quantité demandée, on met à jour la quantité dans le panier
+        $_SESSION['cart']['quantity'][$i] = $product['stock'];
+        $error .= '<div class="alert alert-success text-center mt-2">La quantité du produit ' .$_SESSION['cart']['title'][$i]. ' a été mise à jour à <strong>' .$product['stock']. '</strong></div>';
+
+
+      }else{
+        //le stock est à 0, on supprime le produit du panier
+        $error .= '<div class="alert alert-danger text-center mt-2">Le produit ' .$_SESSION['cart']['title'][$i]. ' a été supprimé du panier car il n\'est plus disponible en stock</div>';
+
+        removeProductFromCart($_SESSION['cart']['id_product'][$i]);
+        $i--; //on décrémente la boucle après la suppression car array_splice supprime l'article dans le tableau et remontent les indices inférieures vers les indices superieurs cela permets de ne pas oublier de controler un article qui aurait changé d'indice
+      
+      }
+
+
+    }
+
   }
 
+      // Requete d'insertion commande
+
+      if (empty($error)) {
+        $data = $connect_db->exec("INSERT INTO `order` (user_id, rising, date, state) VALUE (" . $_SESSION['user']['id_user'] . ", " . totalAmount(). ", NOW(), 'treatment')");
+
+        //on recupere le dernier id généré en BDD l'id de la commande inséré en BDD pour l'enregistrer dans la table SQL order_detail afin de lie chaque produit à la bonne commande
+
+        $idOrder = $connect_db->lastInsertId();
+        // print_r($idOrder);
+
+        for ($i=0; $i < count($_SESSION['cart']['id_product']) ; $i++) { 
+          $data = $connect_db->exec("INSERT INTO `order_details` (order_id, product_id, quantity, price) VALUES ($idOrder, " . $_SESSION['cart']['id_product'][$i] ."," . $_SESSION['cart']['quantity'][$i] . "," . $_SESSION['cart']['price'][$i] .")");
+   
+
+        $data = $connect_db->exec("UPDATE product SET stock = stock - " . $_SESSION['cart']['quantity'][$i] . " WHERE id_product = " . $_SESSION['cart']['id_product'][$i]);
+
+      }
+
+      unset($_SESSION['cart']);
+      $_SESSION['msgValidateOrder'] = "<div class='alert alert-success text-center'> La commande a été prise en compte. Numéro de commande <strong>FAMMS$idOrder</strong></div>";
+    }
 }
 
 require_once('include/header.php');
@@ -53,7 +115,14 @@ require_once('include/header.php');
       <div class="heading_container heading_center">
         <h2>Validez vos<span> Achats !</span></h2>
       </div>
+      <?php if (isset($error)) echo $error;
+      if (isset($_SESSION['msgValidateOrder'])) echo $_SESSION['msgValidateOrder'];
+      unset($_SESSION['msgValidateOrder']);
+       ?>
+
       <div class="row">
+
+    
 
       <table class="table ">
         <thead class= "text-center">
@@ -139,15 +208,3 @@ require_once('include/header.php');
 require_once('include/footer.php');
 
 ?>
-  <!-- footer section -->
-  <!-- jQery -->
-  <script src="assets/js-famma/jquery-3.4.1.min.js"></script>
-  <!-- popper js -->
-  <script src="assets/js-famma/popper.min.js"></script>
-  <!-- bootstrap js -->
-  <script src="assets/js-famma/bootstrap.js"></script>
-  <!-- custom js -->
-  <!-- <script src="assets/js-famma/custom.js"></script> -->
-</body>
-
-</html>

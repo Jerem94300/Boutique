@@ -101,7 +101,7 @@ require_once('include/header.php');
 
       </div>
       <div class="btn-box">
-        <a href=""> Voir tous les produits </a>
+        <a href="product.php"> Voir tous les produits </a>
       </div>
     </div>
   </section>

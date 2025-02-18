@@ -26,6 +26,7 @@ require_once('include/header.php');
 
 ?>
   <!-- inner page section -->
+<body>
   <section class="inner_page_head">
     <div class="container_fuild">
       <div class="row">
@@ -78,15 +79,7 @@ require_once('include/header.php');
 require_once('include/footer.php');
 
 ?>
-  <!-- footer section -->
-  <!-- jQery -->
-  <script src="assets/js-famma/jquery-3.4.1.min.js"></script>
-  <!-- popper js -->
-  <script src="assets/js-famma/popper.min.js"></script>
-  <!-- bootstrap js -->
-  <script src="assets/js-famma/bootstrap.js"></script>
-  <!-- custom js -->
-  <!-- <script src="assets/js-famma/custom.js"></script> -->
+
 </body>
 
 </html>

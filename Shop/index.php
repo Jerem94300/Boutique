@@ -3,7 +3,16 @@
 require_once('include/init.php');
 
 
-// echo  '<pre>'; print_r($_SESSION); echo'</pre>';
+// echo  '<pre>'; print_r($_POST); echo'</pre>';
+// <!--  Selectionner et Affichage des 3 derniers produits enregistré dans la BDD -->
+
+$data = $connect_db->query("SELECT * FROM product ORDER BY id_product DESC LIMIT 3");
+$products = $data->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+// echo '<pre>'; print_r($products); echo'</pre>';
 
 require_once('include/header.php');
 
@@ -43,7 +52,7 @@ require_once('include/header.php');
                       impedit sequi.
                     </p>
                     <div class="btn-box">
-                      <a href="" class="btn1"> Achetez maintenant</a>
+                      <a href="product.php" class="btn1"> Achetez maintenant</a>
                     </div>
                   </div>
                 </div>
@@ -381,7 +390,7 @@ require_once('include/header.php');
               Tenetur commodi, nisi rem vel, ea eaque ab ipsa, autem similique
               ex unde!
             </p>
-            <a href="">Achetez maintenant</a>
+            <a href="product.php">Achetez maintenant</a>
           </div>
         </div>
       </div>
@@ -396,26 +405,29 @@ require_once('include/header.php');
         <h2>Nos <span>produits</span></h2>
       </div>
       <div class="row">
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="box">
-            <div class="option_container">
-              <div class="options">
-                <a href="" class="option1"> Chemise homme </a>
-                <a href="" class="option2"> Acheter maintenant </a>
+      <?php foreach ($products as $product): ?>
+        <div class="col-md-4">
+          <!-- Affichage les 3 produits enregistré dans la BDD -->
+       
+          <div class="box ">
+            <div class="img-box">
+              <img src="<?php echo $product['picture']; ?>" alt="" />
+            </div>
+            <div class="detail-box d-flex flex-column justify-content-between">
+              <h5><?php echo $product['title']; ?></h5>
+              <h6><?php echo $product['price']; ?> €</h6>
+              <p><?php echo $product['description']; ?></p>
+              <div class="btn-box">
+                <a href="fiche_produit.php?id=<?php echo $product['id_product']; ?>">Achetez maintenant</a>
               </div>
             </div>
-            <div class="img-box">
-              <img src="assets/images-famma/p1.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h5>Chemise homme</h5>
-              <h6>75€</h6>
-            </div>
-          </div>
         </div>
       </div>
+        <?php endforeach; ?>
+      </div>
+     
       <div class="btn-box">
-        <a href="">Voir tous les produits</a>
+        <a href="product.php">Voir tous les produits</a>
       </div>
     </div>
   </section>

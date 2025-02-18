@@ -1,9 +1,42 @@
 <?php
 require_once('../include/init.php');
 
+// echo  '<pre>'; print_r($_SESSION); echo'</pre>';
+
 if (!adminConnected()) {
   header('location: '. URL .'index.php');
 }
+
+
+
+$data = $connect_db->query("SELECT product.reference, product.category, product.title, product.description, product.color, product.size, order_details.quantity, product.price FROM product INNER JOIN order_details INNER JOIN `order` ON product.id_product = order_details.product_id AND `order`.id_order = order_details.order_id");
+
+$products = $data->fetchAll(PDO::FETCH_ASSOC);
+
+$dataOrder = $connect_db->query("SELECT * FROM `order`");
+$order = $dataOrder->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+
+
+
+
+
+
+
+echo  '<pre>'; print_r($order); echo'</pre>';
+
+
+$nbProducts = $data->rowCount();
+if($nbProducts <= 1)
+$txt = "$nbProducts produit";
+else 
+  $txt = "$nbProducts produits";
+
+
+
 
 require_once('include/header.php');
   ?>
@@ -15,7 +48,7 @@ require_once('include/header.php');
         <div class="level-left">
           <div class="level-item">
             <ul>
-              <li>Admin</li>
+              <li><?php echo $_SESSION['user']['roles']?></li>
               <li>Commandes</li>
             </ul>
           </div>
@@ -47,8 +80,7 @@ require_once('include/header.php');
         <header class="card-header">
           <p class="card-header-title">
             <span class="icon"><span class="mdi mdi-cart-outline"></span>
-            </span>
-            10 commandes
+            </span><?php echo $nbProducts;?> commandes
           </p>
           <a href="#" class="card-header-icon">
             <span class="icon"><i class="mdi mdi-reload"></i></span>
@@ -69,11 +101,11 @@ require_once('include/header.php');
                     </th>
                     <th></th>
                     <th>Name</th>
-                    <th>Company</th>
+                    <th>Firstname</th>
+                    <th>Email</th>
+                    <th>Address</th>
                     <th>City</th>
-                    <th>Progress</th>
                     <th>Created</th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -91,17 +123,12 @@ require_once('include/header.php');
                           class="is-rounded" />
                       </div>
                     </td>
-                    <td data-label="Name">Rebecca Bauch</td>
-                    <td data-label="Company">Daugherty-Daniel</td>
-                    <td data-label="City">South Cory</td>
-                    <td data-label="Progress" class="is-progress-cell">
-                      <progress
-                        max="100"
-                        class="progress is-small is-primary"
-                        value="79">
-                        79
-                      </progress>
-                    </td>
+                    <td data-label="Name"><?php echo $_SESSION['user']['lastName'] ?></td>
+                    <td data-label="Firstname"><?php echo $_SESSION['user']['firstName'] ?></td>
+                    <td data-label="Email"><?php echo $_SESSION['user']['email'] ?></td>
+                    <td data-label="Address"><?php echo $_SESSION['user']['address'] ?></td>
+                    <td data-label="City"><?php echo $_SESSION['user']['city'] ?></td>
+                   
                     <td data-label="Created">
                       <small
                         class="has-text-grey is-abbr-like"
@@ -157,7 +184,7 @@ require_once('include/header.php');
           <p class="card-header-title">
             <span class="icon"><span class="mdi mdi-cart-arrow-down"></span>
             </span>
-            Détails commande
+            Détails commande :  <?php echo $nbProducts . ' produits';?> 
           </p>
           <a href="#" class="card-header-icon">
             <span class="icon"><i class="mdi mdi-reload"></i></span>
@@ -176,47 +203,40 @@ require_once('include/header.php');
                         <span class="check"></span>
                       </label>
                     </th>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Company</th>
-                    <th>City</th>
-                    <th>Progress</th>
-                    <th>Created</th>
-                    <th></th>
+                    <?php for($i=0; $i < $data->columnCount(); $i++): 
+                        $dataColumn = $data->getColumnMeta($i);
+                        if ($dataColumn['name'] != 'id_product'): ?>
+
+                      <th><?= ucFirst($dataColumn['name'])?></th>
+                     
+
+                    <?php endif; endfor;?>
+                    <th>Total</th>
                   </tr>
+                
                 </thead>
                 <tbody>
+
+                  <?php foreach ($products as $arrayProduct): ?>
+
                   <tr>
                     <td class="is-checkbox-cell">
-                      <label class="b-checkbox checkbox">
+                      <label class="b-checkbox
+                        checkbox">
                         <input type="checkbox" value="false" />
                         <span class="check"></span>
                       </label>
                     </td>
-                    <td class="is-image-cell">
-                      <div class="image">
-                        <img
-                          src="https://avatars.dicebear.com/v2/initials/rebecca-bauch.svg"
-                          class="is-rounded" />
-                      </div>
-                    </td>
-                    <td data-label="Name">Rebecca Bauch</td>
-                    <td data-label="Company">Daugherty-Daniel</td>
-                    <td data-label="City">South Cory</td>
-                    <td data-label="Progress" class="is-progress-cell">
-                      <progress
-                        max="100"
-                        class="progress is-small is-primary"
-                        value="79">
-                        79
-                      </progress>
-                    </td>
-                    <td data-label="Created">
-                      <small
-                        class="has-text-grey is-abbr-like"
-                        title="Oct 25, 2020">Oct 25, 2020</small>
-                    </td>
-                    <td class="is-actions-cell">
+                    <?php foreach ($arrayProduct as $key => $value): 
+                        if ($key != 'id_product'): ?>
+                      <td data-label="<?= $key?>"><?= $value?></td>
+                    <?php endif;?>
+
+                      <?php if ($key == 'price'): ?>
+                        <td data-label="Total"><?= $arrayProduct['price'] * $arrayProduct['quantity']?> €</td>
+                    <?php endif; endforeach;?>
+                    <td class="is-actions
+                      -cell">
                       <div class="buttons is-right">
                         <button
                           class="button is-small is-primary"
@@ -232,7 +252,10 @@ require_once('include/header.php');
                       </div>
                     </td>
                   </tr>
+                  <?php endforeach;?>
                 </tbody>
+
+
               </table>
             </div>
             <!-- <div class="notification">

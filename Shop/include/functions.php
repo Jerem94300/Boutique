@@ -48,7 +48,7 @@ function addProductToCart($id_product, $title, $picture, $reference, $quantity, 
 
     // on controle si l'id du produit qu'on essai d'ajouter existe deja 
     $positionProduct = array_search($id_product, $_SESSION['cart']['id_product']);
-    var_dump($positionProduct);
+    // var_dump($positionProduct);
     //si la valeur de $positionProduct est differente de false cela veut dire que l'id_product existe dans le panier , on modifie seulement la quantite du produit
     if($positionProduct !== false){
 
@@ -65,6 +65,29 @@ function addProductToCart($id_product, $title, $picture, $reference, $quantity, 
     $_SESSION['cart']['quantity'][]  = $quantity;
     $_SESSION['cart']['price'][] = $price;
 }
+
+//Fonction supprimer produit du panier
+
+function removeProductFromCart($id_product){
+
+    //on recupere la position du produit dans le panier
+    $positionProduct = array_search($id_product, $_SESSION['cart']['id_product']);
+    // var_dump($positionProduct);
+
+    //si la valeur de $positionProduct est differente de false cela veut dire que l'id_product existe dans le panier , on supprime la ligne du produit
+    if($positionProduct !== false){
+
+        //array_splice permet de supprimer un element dans un array a un indice correspondant et elle remonte les indices inférieure vers les indices superieurs,  si je supprime le produit à l'indice 2 du tableau Array, le produit à l'indice 3 remonte à l'indice 2
+        array_splice($_SESSION['cart']['id_product'], $positionProduct, 1);
+        array_splice($_SESSION['cart']['title'], $positionProduct, 1);
+        array_splice($_SESSION['cart']['picture'], $positionProduct, 1);
+        array_splice($_SESSION['cart']['reference'], $positionProduct, 1);
+        array_splice($_SESSION['cart']['quantity'], $positionProduct, 1);
+        array_splice($_SESSION['cart']['price'], $positionProduct, 1);
+    }
+}
+
+
 
 //Fonction montant total du panier
 
