@@ -1,11 +1,16 @@
 <?php
 require_once('../include/init.php');
 
-//  echo  '<pre>'; print_r($_POST); echo'</pre>';
+ echo  '<pre>'; print_r($_POST); echo'</pre>';
+ echo  '<pre>'; print_r($_GET); echo'</pre>';
 
 if (!adminConnected()) {
   header('location: '. URL .'index.php');
 }
+
+
+
+
 
 
 
@@ -21,6 +26,10 @@ $order = $dataOrder->fetchAll(PDO::FETCH_ASSOC);
 
 
 // echo  '<pre>'; print_r($order); echo'</pre>';
+
+
+
+
 
 
 $nbProducts = $data->rowCount();
@@ -54,8 +63,21 @@ else
 
 
 
+  foreach ($_POST as $key => $value) {
 
-
+    if ($key == 'state') {
+      $dataUpdate = $connect_db->prepare("UPDATE `order` SET state = :state WHERE id_order = :id");
+      $dataUpdate->bindValue('state', $value, PDO::PARAM_STR);
+      $dataUpdate->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+      $dataUpdate->execute();
+      header('location: '. URL .'admin/gestion_commande.php');
+    }
+  
+  
+  
+  }
+  
+  
 
 
 require_once('include/header.php');
@@ -147,9 +169,12 @@ require_once('include/header.php');
                         <td>
                         <form method="post">
                           <div class="select is-primary">
-                            <select name="" id="">
+                            <select name="state">
+                              <option value="pending">En attente</option>
                               <option value="treatment">En traitement</option>
                               <option value="send">Envoyé</option>
+                              <option value="completed">Terminé</option>
+                              <option value="cancelled">Annulé</option>
                             </select>
                           </div>
                           <button class="button is-link" type="sumbmit">Valider</button>
@@ -240,7 +265,6 @@ require_once('include/header.php');
 
                     <?php endif; endfor;?>
                     <th>Total</th>
-                    <th>Action</th>
                   </tr>
                 
                 </thead>
@@ -291,22 +315,7 @@ require_once('include/header.php');
                       <?php if ($key == 'price'): ?>
                         <td data-label="Total"><?= $arrayProduct['price'] * $arrayProduct['quantity']?> €</td>
                     <?php endif; endforeach;?>
-                    <td class="is-actions
-                      -cell is-justify-content-center">
-                      <div class="buttons is-center">
-                        <button
-                          class="button is-small is-primary "
-                          type="button">
-                          <span class="icon"><i class="mdi mdi-pencil"></i></span>
-                        </button>
-                        <button
-                          class="button is-small is-danger jb-modal"
-                          data-target="sample-modal"
-                          type="button">
-                          <span class="icon"><i class="mdi mdi-trash-can"></i></span>
-                        </button>
-                      </div>
-                    </td>
+                   
                   </tr>
                   <?php endif;?>
 

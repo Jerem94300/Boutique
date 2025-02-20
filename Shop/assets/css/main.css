@@ -5888,6 +5888,7 @@ button.dropdown-item.is-active {
 .level {
   align-items: center;
   justify-content: space-between;
+ 
 }
 .level code {
   border-radius: 4px;
@@ -5929,10 +5930,12 @@ button.dropdown-item.is-active {
   flex-grow: 0;
   flex-shrink: 0;
   justify-content: center;
+  text-align: ;
 }
 .level-item .title,
 .level-item .subtitle {
   margin-bottom: 0;
+ 
 }
 @media screen and (max-width: 768px) {
   .level-item:not(:last-child) {

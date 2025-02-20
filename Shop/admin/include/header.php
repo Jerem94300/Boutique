@@ -1,3 +1,10 @@
+<?php
+  $page = basename($_SERVER['PHP_SELF']);
+
+//  echo '<pre>';
+//  print_r($_SESSION);
+//  echo '</pre>';
+  ?>
 <!DOCTYPE html>
 <html
   lang="en"
@@ -18,6 +25,8 @@
     href="https://fonts.googleapis.com/css?family=Nunito"
     rel="stylesheet"
     type="text/css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -38,7 +47,7 @@
                   src="https://avatars.dicebear.com/v2/initials/john-doe.svg"
                   alt="John Doe" />
               </div>
-              <div class="is-user-name"><span>John Doe</span></div>
+              <div class="is-user-name"><span><?php echo ucfirst($_SESSION['user']['firstName']); ?></span></div>
               <!-- <span class="icon"><i class="mdi mdi-chevron-down"></i></span> -->
             </a>
             <!-- <div class="navbar-dropdown">
@@ -61,7 +70,7 @@
                 </a>
               </div> -->
           </div>
-          <a title="Log out" class="navbar-item is-desktop-icon-only">
+          <a href="../index.php" title="Log out" class="navbar-item is-desktop-icon-only">
             <span class="icon"><i class="mdi mdi-logout"></i></span>
             <span>Log out</span>
           </a>
@@ -77,8 +86,8 @@
       <div class="menu is-menu-main">
         <p class="menu-label">General</p>
         <ul class="menu-list">
-          <li>
-            <a href="index.php" class="has-icon">
+          <li >
+            <a href="index.php" class="has-icon  <?php if($page == 'index.php') echo 'is-active'?>">
               <span class="icon"><i class="mdi mdi-desktop-mac"></i></span>
               <span class="menu-item-label">Dashboard</span>
             </a>
@@ -86,22 +95,22 @@
         </ul>
         <p class="menu-label">MENU</p>
         <ul class="menu-list">
-          <li>
-            <a href="gestion_boutique.php" class="is-active has-icon">
-              <span class="icon has-update-mark"><span class="mdi mdi-store"></span>
+          <li class="">
+            <a href="gestion_boutique.php" class="has-icon <?php if($page == 'gestion_boutique.php') echo 'is-active'?>">
+              <span class="icon <?php if($page == 'gestion_boutique.php') echo 'has-update-mark'?>"><span class="mdi mdi-store"></span>
               </span>
               <span class="menu-item-label">Boutique</span>
             </a>
           </li>
           <li>
-            <a href="gestion_commande.php" class="has-icon">
-              <span class="icon"><span class="mdi mdi-sheep"></span> </span>
+            <a href="gestion_commande.php" class="has-icon <?php if($page == 'gestion_commande.php') echo 'is-active'?>">
+              <span class="icon <?php if($page == 'gestion_commande.php') echo 'has-update-mark'?>"><span class="mdi mdi-sheep"></span> </span>
               <span class="menu-item-label">Commandes</span>
             </a>
           </li>
           <li>
-            <a href="gestion_user.php" class="has-icon">
-              <span class="icon"><i class="mdi mdi-account-circle"></i></span>
+            <a href="gestion_user.php" class="has-icon <?php if($page == 'gestion_user.php') echo 'is-active'?>">
+              <span class="icon <?php if($page == 'gestion_user.php') echo 'has-update-mark'?>"><i class="mdi mdi-account-circle"></i></span>
               <span class="menu-item-label">Utilisateurs</span>
             </a>
           </li>

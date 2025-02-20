@@ -110,3 +110,21 @@ function activeLink($url){
         echo 'active';
    
     }
+
+
+//Fonction execute requete
+
+function executeRequete($requete, $params = array()){
+
+    //on se connecte à la base de données
+    $pdo = new PDO('mysql:host=localhost;dbname=shop', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING, PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+
+    //on prepare la requete
+    $result = $pdo->prepare($requete);
+
+    //on execute la requete
+    $result->execute($params);
+
+    //on retourne le resultat
+    return $result;
+}

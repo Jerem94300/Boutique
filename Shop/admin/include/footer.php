@@ -1,7 +1,8 @@
-<footer class="footer">
+<footer class="footer ">
       <div class="container-fluid">
         <div class="level">
-          <div class="level-left">
+          <div class="level-left ">
+
             <div class="level-item">© 2025, Jérémy ABELARD</div>
           </div>
         </div>
