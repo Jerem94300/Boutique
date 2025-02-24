@@ -43,7 +43,7 @@ if(empty($produitsWarning)){
 
 //Afficher le nombre de clients
 
-$resultat = executeRequete("SELECT COUNT(*) FROM user");
+$resultat = executeRequete("SELECT COUNT(*) FROM user WHERE roles = 'user'");
 
 $nbClients = $resultat->fetchAll(PDO::FETCH_ASSOC);
 
@@ -105,20 +105,6 @@ $bestSell = $bestSell->fetchAll(PDO::FETCH_ASSOC);
 // echo '<pre>';
 // print_r($bestSell);
 // echo '</pre>';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 require_once('include/header.php');
@@ -214,6 +200,9 @@ require_once('include/header.php');
         </div>
         
       </div>
+      <!-- On affiche la div que SI on entre dans la condition uniquement si le stock est egale a 0 -->
+
+      <?php if(!empty($produits)): ?>
 
       <div class="card has-table has-mobile-sort-spaced">
         <header class="card-header">
@@ -291,11 +280,20 @@ require_once('include/header.php');
         </div>
       </div>
 
+      <?php endif; ?>
+
       <?php echo $msgStockDanger; ?>
+
+      
       <br>
       <br>
       <br>
       <br>
+
+            <!-- On affiche la div que SI on entre dans la condition uniquement si le stock est egale est entre 1 et 5 -->
+
+      <?php if(!empty($produitsWarning)): ?>
+
 
       <div class="card has-table has-mobile-sort-spaced">
         <header class="card-header">
@@ -320,6 +318,7 @@ require_once('include/header.php');
                     <th class="has-text-centered">Color</th>
                     <th class="has-text-centered">Size</th>
                     <th class="has-text-centered">Stock</th>
+                    <th class="has-text-centered">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -333,6 +332,13 @@ require_once('include/header.php');
                     echo '<td>'. $produit['color'] .'</td>';
                     echo '<td>'. $produit['size'] .'</td>';
                     echo '<td>'. $produit['stock'] .'</td>';
+                    echo '<td class="is-actions-cell">';
+                    echo '<div class="buttons is-centered">';
+                    echo '<a href="gestion_boutique.php?id_product='. $produit['id_product'] .'" class="button is-small is-primary" title="Edit">';
+                    echo '<span class="icon is-small"><i class="mdi mdi-pencil"></i></span>';
+                    echo '</a>';
+                    echo '</div>';
+                    echo '</td>';
                     echo '</tr>';
                   }
                   ?>
@@ -363,6 +369,8 @@ require_once('include/header.php');
           </div>
         </div>
       </div>
+
+      <?php endif; ?>
 
       <?php echo $msgStockWarning; ?>
     </section>
