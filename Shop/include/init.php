@@ -32,14 +32,23 @@ define("URL", "http://localhost/PHP/Shop/");
 
 //----Failles XSS
 
+
+
 foreach ($_POST as $key => $value) {
-    $_POST[$key] = htmlentities(addslashes(trim($value)));
+    if (!is_array($value)) { // Vérifie que ce n'est pas un tableau
+        $_POST[$key] = htmlentities(addslashes(trim($value)));
+    }
 }
 
 foreach ($_GET as $key => $value) {
-    $_GET[$key] = htmlentities(addslashes(trim($value)));
+    if (!is_array($value)) {
+        $_GET[$key] = htmlentities(addslashes(trim($value)));
+    }
 }
+
 //trim() supprime les espaces en débuts et en fin de châines de caractères
+
+
 
 
 //------ Inclusions Fonctionss
